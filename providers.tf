@@ -3,5 +3,5 @@ terraform {
 }
 
 provider "tfe" {
-  token = var.tfe_token
+  version = ">= 0.51.1"
 }

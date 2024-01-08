@@ -42,10 +42,10 @@ resource "tfe_project_variable_set" "owners_project_variable_set" {
 }
 
 resource "tfe_variable" "owner_team_token" {
-  key = "tfe_token"
+  key = "TFE_TOKEN"
   value = tfe_team_token.owners_team_token
   sensitive = true
-  category = "terraform"
+  category = "environment"
   variable_set_id = tfe_variable_set.owners_variable_set.id
   description = "The Owner's Team TFE Token"
 }
@@ -82,10 +82,10 @@ resource "tfe_team_token" "pmr_team_token" {
 }
 
 resource "tfe_variable" "pmr_team_token" {
-  key = "tfe_token"
+  key = "TFE_TOKEN"
   value = tfe_team_token.pmr_team_token.token
   sensitive = true
-  category = "terraform"
+  category = "environment"
   variable_set_id = tfe_variable_set.pmr_variable_set.id
   description = "The Owner's Team TFE Token"
 }
@@ -121,10 +121,10 @@ resource "tfe_team_token" "policies_team_token" {
 }
 
 resource "tfe_variable" "policies_team_token" {
-  key = "tfe_token"
+  key = "TFE_TOKEN"
   value = tfe_team_token.policies_team_token.token
   sensitive = true
-  category = "terraform"
+  category = "environment"
   variable_set_id = tfe_variable_set.policies_variable_set.id
   description = "The Policies's Team TFE Token"
 }
