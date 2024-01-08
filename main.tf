@@ -43,7 +43,7 @@ resource "tfe_project_variable_set" "owners_project_variable_set" {
 
 resource "tfe_variable" "owner_team_token" {
   key = "TFE_TOKEN"
-  value = tfe_team_token.owners_team_token
+  value = tfe_team_token.owners_team_token.token
   sensitive = true
   category = "env"
   variable_set_id = tfe_variable_set.owners_variable_set.id
