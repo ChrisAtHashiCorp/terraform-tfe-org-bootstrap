@@ -1,9 +1,3 @@
-variable "tfe_token" {
-  type = string
-  description = "TFE provider token (owners team)"
-  sensitive = true
-}
-
 variable "org_name" {
   type        = string
   description = "Name of the Organization to bootstrap."
