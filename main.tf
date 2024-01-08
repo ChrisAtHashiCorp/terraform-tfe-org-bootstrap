@@ -50,6 +50,15 @@ resource "tfe_variable" "owner_team_token" {
   description     = "The Owner's Team TFE Token"
 }
 
+resource "tfe_variable" "vcs_oauth_token" {
+  key             = "vcs_oauth_token"
+  value           = var.vcs_oauth_token
+  sensitive       = true
+  category        = "terraform"
+  variable_set_id = tfe_variable_set.owners_variable_set.id
+  description     = "The VCS OAUTH setup token."
+}
+
 # Configure the Project and Team for manipulating the PMR
 
 resource "tfe_project" "pmr_project" {
