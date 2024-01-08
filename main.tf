@@ -42,12 +42,12 @@ resource "tfe_project_variable_set" "owners_project_variable_set" {
 }
 
 resource "tfe_variable" "owner_team_token" {
-  key = "TFE_TOKEN"
-  value = tfe_team_token.owners_team_token.token
-  sensitive = true
-  category = "env"
+  key             = "TFE_TOKEN"
+  value           = tfe_team_token.owners_team_token.token
+  sensitive       = true
+  category        = "env"
   variable_set_id = tfe_variable_set.owners_variable_set.id
-  description = "The Owner's Team TFE Token"
+  description     = "The Owner's Team TFE Token"
 }
 
 # Configure the Project and Team for manipulating the PMR
@@ -62,7 +62,7 @@ resource "tfe_team" "pmr_team" {
   organization = tfe_organization.org.name
   organization_access {
     manage_providers = true
-    manage_modules = true
+    manage_modules   = true
   }
 }
 
@@ -82,12 +82,12 @@ resource "tfe_team_token" "pmr_team_token" {
 }
 
 resource "tfe_variable" "pmr_team_token" {
-  key = "TFE_TOKEN"
-  value = tfe_team_token.pmr_team_token.token
-  sensitive = true
-  category = "env"
+  key             = "TFE_TOKEN"
+  value           = tfe_team_token.pmr_team_token.token
+  sensitive       = true
+  category        = "env"
   variable_set_id = tfe_variable_set.pmr_variable_set.id
-  description = "The Owner's Team TFE Token"
+  description     = "The Owner's Team TFE Token"
 }
 
 # Create the Project and Team for manipulating policies
@@ -121,24 +121,10 @@ resource "tfe_team_token" "policies_team_token" {
 }
 
 resource "tfe_variable" "policies_team_token" {
-  key = "TFE_TOKEN"
-  value = tfe_team_token.policies_team_token.token
-  sensitive = true
-  category = "env"
+  key             = "TFE_TOKEN"
+  value           = tfe_team_token.policies_team_token.token
+  sensitive       = true
+  category        = "env"
   variable_set_id = tfe_variable_set.policies_variable_set.id
-  description = "The Policies's Team TFE Token"
-}
-
-# Create the root Workspace that will house the state for the Org
-
-resource "tfe_workspace" "root" {
-  name = "root"
-  organization = tfe_organization.org.id
-  project_id = tfe_project.owners_project.id
-
-  vcs_repo {
-    identifier = "ChrisAtHashiCorp/moad"
-    oauth_token_id = tfe_oauth_client.vcs_client.oauth_token_id
-  }
-  working_directory = "bootstrap"
+  description     = "The Policies's Team TFE Token"
 }
