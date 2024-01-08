@@ -44,12 +44,6 @@ variable "vcs_provider" {
   default     = "github"
 }
 
-variable "org_workspace_name" {
-  type        = string
-  description = "Name of the Workspace that will hold the state for the Org."
-  default     = "root"
-}
-
 variable "pmr_project_name" {
   type        = string
   description = "Name of the project that will hold the Workspace(s) containing code to manage the PMR."
