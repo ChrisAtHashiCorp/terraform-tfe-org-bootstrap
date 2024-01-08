@@ -14,10 +14,10 @@ variable "org_owner" {
   description = "Email of the account that will own the Organization"
 }
 
-variable "root_project" {
+variable "owners_project" {
   type        = string
-  description = "Name of the root project that will hold the Workspaces containing the Org."
-  default     = "root"
+  description = "Name of the Owners project that will hold the Workspaces containing the Org."
+  default     = "owners"
 }
 
 variable "vcs_client_name" {
@@ -56,16 +56,16 @@ variable "org_workspace_name" {
   default     = "root"
 }
 
-variable "modules_project_name" {
+variable "pmr_project_name" {
   type        = string
   description = "Name of the project that will hold the Workspace(s) containing code to manage the PMR."
-  default     = "modules"
+  default     = "pmr"
 }
 
-variable "modules_team_name" {
+variable "pmr_team_name" {
   type        = string
   description = "Name of the team that will have access to the Project for managing the PMR."
-  default     = "modules"
+  default     = "pmr"
 }
 
 variable "policies_project_name" {
