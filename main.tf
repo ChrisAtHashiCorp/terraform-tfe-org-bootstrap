@@ -27,7 +27,7 @@ resource "tfe_variable" "vcs_token_id" {
   category        = "terraform"
   sensitive       = true
   description     = "The VCS Client OAUTH Token ID"
-  variable_set_id = tfe_variable_set.global_var_set
+  variable_set_id = tfe_variable_set.global_var_set.id
 }
 
 # Create the Owner's Project and set Owner Team TFE token in Project var set
