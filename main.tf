@@ -14,22 +14,6 @@ resource "tfe_oauth_client" "vcs_client" {
   service_provider = var.vcs_provider
 }
 
-resource "tfe_variable_set" "global_var_set" {
-  name         = "Global Variables"
-  description  = "Global variable set to house things such as the VCS token ID."
-  organization = tfe_organization.org.id
-  global       = true
-}
-
-resource "tfe_variable" "vcs_token_id" {
-  key             = "vcs_token_id"
-  value           = tfe_oauth_client.vcs_client.oauth_token_id
-  category        = "terraform"
-  sensitive       = true
-  description     = "The VCS Client OAUTH Token ID"
-  variable_set_id = tfe_variable_set.global_var_set.id
-}
-
 # Create the Owner's Project and set Owner Team TFE token in Project var set
 
 data "tfe_team" "owners" {
