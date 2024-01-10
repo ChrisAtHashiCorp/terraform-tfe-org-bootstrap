@@ -90,6 +90,12 @@ resource "tfe_team" "pmr_team" {
   }
 }
 
+resource "tfe_team_project_access" "pmr_team_access" {
+  access = "admin"
+  team_id = tfe_team.pmr_team.id
+  project_id = tfe_project.pmr_project.id
+}
+
 resource "tfe_variable_set" "pmr_variable_set" {
   name         = "PMR"
   description  = "Variable set for the PMR's Team."
@@ -111,7 +117,7 @@ resource "tfe_variable" "pmr_team_token" {
   sensitive       = true
   category        = "env"
   variable_set_id = tfe_variable_set.pmr_variable_set.id
-  description     = "The Owner's Team TFE Token"
+  description     = "The PMR's Team TFE Token"
 }
 
 # Create the Project and Team for manipulating policies
@@ -127,6 +133,12 @@ resource "tfe_team" "policies_team" {
   organization_access {
     manage_policies = true
   }
+}
+
+resource "tfe_team_project_access" "policies_team_access" {
+  access = "admin"
+  team_id = tfe_team.policies_team.id
+  project_id = tfe_project.policies_project.id
 }
 
 resource "tfe_variable_set" "policies_variable_set" {
