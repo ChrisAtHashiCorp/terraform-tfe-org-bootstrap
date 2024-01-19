@@ -82,59 +82,34 @@ resource "tfe_variable" "vcs_oauth_token" {
 # Configure the Project and Team for manipulating the PMR
 #
 
-module "env-builder" {
+module "pmr" {
   source  = "ChrisAtHashiCorp/env-builder/tfe"
   
   org_name = tfe_organization.org.id
-  env = { name = "PMR" }
+  env = {
+    name = "pmr"
+    organization_access {
+      manage_providers = true
+      manage_modules = true
+    }
+  }
 }
 
 #
 # Create the Project and Team for manipulating Policies and Run Tasks
 #
 
-resource "tfe_project" "policies_project" {
-  organization = tfe_organization.org.name
-  name         = var.policies_project_name
-}
-
-resource "tfe_team" "policies_team" {
-  name         = var.policies_team_name
-  organization = tfe_organization.org.name
-  organization_access {
-    manage_policies  = true
-    manage_run_tasks = true
+module "policies" {
+  source  = "ChrisAtHashiCorp/env-builder/tfe"
+  
+  org_name = tfe_organization.org.id
+  env = {
+    name = "policies"
+    organization_access {
+      manage_policies = true
+      manage_run_tasks = true
+    }
   }
-}
-
-resource "tfe_team_project_access" "policies_team_access" {
-  access     = "admin"
-  team_id    = tfe_team.policies_team.id
-  project_id = tfe_project.policies_project.id
-}
-
-resource "tfe_variable_set" "policies_variable_set" {
-  name         = "Policies"
-  description  = "Variable set for the Policies's Team."
-  organization = tfe_organization.org.name
-}
-
-resource "tfe_project_variable_set" "policies_project_variable_set" {
-  variable_set_id = tfe_variable_set.policies_variable_set.id
-  project_id      = tfe_project.policies_project.id
-}
-
-resource "tfe_team_token" "policies_team_token" {
-  team_id = tfe_team.policies_team.id
-}
-
-resource "tfe_variable" "policies_team_token" {
-  key             = "TFE_TOKEN"
-  value           = tfe_team_token.policies_team_token.token
-  sensitive       = true
-  category        = "env"
-  variable_set_id = tfe_variable_set.policies_variable_set.id
-  description     = "The Policies's Team TFE Token"
 }
 
 #
