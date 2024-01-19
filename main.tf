@@ -84,7 +84,6 @@ resource "tfe_variable" "vcs_oauth_token" {
 
 module "env-builder" {
   source  = "ChrisAtHashiCorp/env-builder/tfe"
-  version = "0.0.1"
   
   org_name = tfe_organization.org.id
   env = { name = "PMR" }
