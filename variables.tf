@@ -67,4 +67,3 @@ variable "policies_team_name" {
   description = "Name of the team that will have access to the Project for managing policy sets."
   default     = "policies"
 }
-

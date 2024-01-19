@@ -1,4 +1,6 @@
-# Create Org, VCS Provider, and set Global Variable Set for VCS Token ID
+#
+# Create Org, VCS Provider, and set Global Variable Set for Org name
+#
 
 resource "tfe_organization" "org" {
   name  = var.org_name
@@ -29,7 +31,9 @@ resource "tfe_variable" "vcs_token_id" {
   variable_set_id = tfe_variable_set.global_var_set.id
 }
 
+#
 # Create the Owner's Project and set Owner Team TFE token in Project var set
+#
 
 data "tfe_team" "owners" {
   name         = "owners"
@@ -74,53 +78,21 @@ resource "tfe_variable" "vcs_oauth_token" {
   description     = "The VCS OAUTH setup token."
 }
 
+#
 # Configure the Project and Team for manipulating the PMR
+#
 
-resource "tfe_project" "pmr_project" {
-  organization = tfe_organization.org.name
-  name         = var.pmr_project_name
+module "env-builder" {
+  source  = "ChrisAtHashiCorp/env-builder/tfe"
+  version = "0.0.1"
+  
+  org_name = tfe_organization.org.id
+  env = { name = "PMR" }
 }
 
-resource "tfe_team" "pmr_team" {
-  name         = var.pmr_team_name
-  organization = tfe_organization.org.name
-  organization_access {
-    manage_providers = true
-    manage_modules   = true
-  }
-}
-
-resource "tfe_team_project_access" "pmr_team_access" {
-  access = "admin"
-  team_id = tfe_team.pmr_team.id
-  project_id = tfe_project.pmr_project.id
-}
-
-resource "tfe_variable_set" "pmr_variable_set" {
-  name         = "PMR"
-  description  = "Variable set for the PMR's Team."
-  organization = tfe_organization.org.name
-}
-
-resource "tfe_project_variable_set" "pmr_project_variable_set" {
-  variable_set_id = tfe_variable_set.pmr_variable_set.id
-  project_id      = tfe_project.pmr_project.id
-}
-
-resource "tfe_team_token" "pmr_team_token" {
-  team_id = tfe_team.pmr_team.id
-}
-
-resource "tfe_variable" "pmr_team_token" {
-  key             = "TFE_TOKEN"
-  value           = tfe_team_token.pmr_team_token.token
-  sensitive       = true
-  category        = "env"
-  variable_set_id = tfe_variable_set.pmr_variable_set.id
-  description     = "The PMR's Team TFE Token"
-}
-
-# Create the Project and Team for manipulating policies
+#
+# Create the Project and Team for manipulating Policies and Run Tasks
+#
 
 resource "tfe_project" "policies_project" {
   organization = tfe_organization.org.name
@@ -131,13 +103,14 @@ resource "tfe_team" "policies_team" {
   name         = var.policies_team_name
   organization = tfe_organization.org.name
   organization_access {
-    manage_policies = true
+    manage_policies  = true
+    manage_run_tasks = true
   }
 }
 
 resource "tfe_team_project_access" "policies_team_access" {
-  access = "admin"
-  team_id = tfe_team.policies_team.id
+  access     = "admin"
+  team_id    = tfe_team.policies_team.id
   project_id = tfe_project.policies_project.id
 }
 
@@ -164,3 +137,9 @@ resource "tfe_variable" "policies_team_token" {
   variable_set_id = tfe_variable_set.policies_variable_set.id
   description     = "The Policies's Team TFE Token"
 }
+
+#
+# Environment Generator
+# This will create Projects and Teams for different environments, such as {dev,qa,prod}.
+# Basically, it will create an
+#
