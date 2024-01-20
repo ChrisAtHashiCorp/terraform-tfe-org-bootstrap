@@ -88,7 +88,7 @@ module "pmr" {
   org_name = tfe_organization.org.id
   env_name = "pmr"
   access = {
-    organization_access {
+    organization_access = {
       manage_providers = true
       manage_modules = true
     }
@@ -104,8 +104,8 @@ module "policies" {
   
   org_name = tfe_organization.org.id
   env_name = "policies"
-  env = {
-    organization_access {
+  access = {
+    organization_access = {
       manage_policies = true
       manage_run_tasks = true
     }
